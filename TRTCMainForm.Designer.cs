@@ -233,9 +233,9 @@ namespace TRTCCSharpDemo
             // remoteUserLabel3
             // 
             this.remoteUserLabel3.Font = new System.Drawing.Font("微软雅黑", 12F);
-            this.remoteUserLabel3.Location = new System.Drawing.Point(20, 585);
+            this.remoteUserLabel3.Location = new System.Drawing.Point(849, 59);
             this.remoteUserLabel3.Name = "remoteUserLabel3";
-            this.remoteUserLabel3.Size = new System.Drawing.Size(180, 20);
+            this.remoteUserLabel3.Size = new System.Drawing.Size(250, 20);
             this.remoteUserLabel3.TabIndex = 7;
             this.remoteUserLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -276,9 +276,9 @@ namespace TRTCCSharpDemo
             this.remoteVideoPanel3.BackColor = System.Drawing.SystemColors.Control;
             this.remoteVideoPanel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.remoteVideoPanel3.Controls.Add(this.remoteInfoLabel3);
-            this.remoteVideoPanel3.Location = new System.Drawing.Point(20, 604);
+            this.remoteVideoPanel3.Location = new System.Drawing.Point(848, 79);
             this.remoteVideoPanel3.Name = "remoteVideoPanel3";
-            this.remoteVideoPanel3.Size = new System.Drawing.Size(180, 100);
+            this.remoteVideoPanel3.Size = new System.Drawing.Size(250, 140);
             this.remoteVideoPanel3.TabIndex = 9;
             // 
             // remoteInfoLabel3
@@ -286,19 +286,19 @@ namespace TRTCCSharpDemo
             this.remoteInfoLabel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(32)))), ((int)(((byte)(47)))));
             this.remoteInfoLabel3.Font = new System.Drawing.Font("微软雅黑", 12F);
             this.remoteInfoLabel3.ForeColor = System.Drawing.Color.White;
-            this.remoteInfoLabel3.Location = new System.Drawing.Point(-1, 0);
+            this.remoteInfoLabel3.Location = new System.Drawing.Point(0, -1);
             this.remoteInfoLabel3.Name = "remoteInfoLabel3";
-            this.remoteInfoLabel3.Size = new System.Drawing.Size(180, 100);
+            this.remoteInfoLabel3.Size = new System.Drawing.Size(250, 140);
             this.remoteInfoLabel3.TabIndex = 2;
-            this.remoteInfoLabel3.Text = "+添加源";
+            this.remoteInfoLabel3.Text = "等待连麦";
             this.remoteInfoLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // remoteVoiceProgressBar3
             // 
             this.remoteVoiceProgressBar3.ForeColor = System.Drawing.Color.Green;
-            this.remoteVoiceProgressBar3.Location = new System.Drawing.Point(20, 704);
+            this.remoteVoiceProgressBar3.Location = new System.Drawing.Point(848, 219);
             this.remoteVoiceProgressBar3.Name = "remoteVoiceProgressBar3";
-            this.remoteVoiceProgressBar3.Size = new System.Drawing.Size(180, 10);
+            this.remoteVoiceProgressBar3.Size = new System.Drawing.Size(250, 10);
             this.remoteVoiceProgressBar3.TabIndex = 18;
             this.remoteVoiceProgressBar3.Visible = false;
             // 
@@ -544,6 +544,7 @@ namespace TRTCCSharpDemo
             this.btnPush.TabIndex = 21;
             this.btnPush.Text = "开始推流";
             this.btnPush.UseVisualStyleBackColor = false;
+            this.btnPush.Click += new System.EventHandler(this.btnPush_Click);
             // 
             // panel3
             // 
@@ -567,19 +568,20 @@ namespace TRTCCSharpDemo
             this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(32)))), ((int)(((byte)(47)))));
             this.label1.Font = new System.Drawing.Font("微软雅黑", 12F);
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(848, 87);
+            this.label1.Location = new System.Drawing.Point(26, 593);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(250, 140);
+            this.label1.Size = new System.Drawing.Size(180, 100);
             this.label1.TabIndex = 2;
-            this.label1.Text = "等待连麦";
+            this.label1.Text = "+添加源";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // btnlinked
             // 
             this.btnlinked.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(172)))), ((int)(((byte)(183)))), ((int)(((byte)(191)))));
             this.btnlinked.Font = new System.Drawing.Font("微软雅黑", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnlinked.ForeColor = System.Drawing.Color.White;
-            this.btnlinked.Location = new System.Drawing.Point(12, 25);
+            this.btnlinked.Location = new System.Drawing.Point(12, 15);
             this.btnlinked.Name = "btnlinked";
             this.btnlinked.Size = new System.Drawing.Size(227, 34);
             this.btnlinked.TabIndex = 21;
@@ -659,9 +661,9 @@ namespace TRTCCSharpDemo
             // 
             this.panel7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(232)))), ((int)(((byte)(238)))));
             this.panel7.Controls.Add(this.btnlinked);
-            this.panel7.Location = new System.Drawing.Point(848, 219);
+            this.panel7.Location = new System.Drawing.Point(848, 229);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(250, 87);
+            this.panel7.Size = new System.Drawing.Size(250, 67);
             this.panel7.TabIndex = 27;
             // 
             // kuaiji
@@ -670,10 +672,10 @@ namespace TRTCCSharpDemo
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1127, 776);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.remoteVoiceProgressBar3);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.panel2);
-            this.Controls.Add(this.remoteVoiceProgressBar3);
             this.Controls.Add(this.localVoiceProgressBar);
             this.Controls.Add(this.remoteUserLabel3);
             this.Controls.Add(this.localUserLabel);

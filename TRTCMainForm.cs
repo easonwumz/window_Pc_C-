@@ -10,6 +10,10 @@ using TRTCCSharpDemo.CustomControl;
 using System.Runtime.InteropServices;
 using static System.Windows.Forms.ListViewItem;
 using static System.Windows.Forms.ListView;
+using System.Net;
+using System.Collections.Specialized;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 /// <summary>
 /// Module： TRTCMainForm
@@ -115,7 +119,6 @@ namespace TRTCCSharpDemo
             if (isHasLinkedUser)
             {
                 initLinkedUser();
-                //initList();
                 this.noLinkedUser.Visible = false;
                 this.lvlinkedUser.Visible = true;
             }
@@ -124,6 +127,14 @@ namespace TRTCCSharpDemo
                 this.lvlinkedUser.Visible = false;
             }
             
+        }
+
+        private void rtc_Signature(string liveId) {
+            NameValueCollection nameValueCollection = new NameValueCollection() {
+                { "liveId", liveId }
+            };
+            string res = HttpUtil.WebPost(ApiServer.RTC_SIGNATURE, nameValueCollection);
+            ShowMessage("res:" + res);
         }
 
         
@@ -270,7 +281,7 @@ namespace TRTCCSharpDemo
             // 设置进房所需的相关参数
             TRTCParams trtcParams = new TRTCParams();
             trtcParams.sdkAppId = GenerateTestUserSig.SDKAPPID;
-            trtcParams.roomId = DataManager.GetInstance().roomId;
+            trtcParams.roomId = DataManager.GetInstance().liveId;
             trtcParams.userId = DataManager.GetInstance().account;
             trtcParams.userSig = GenerateTestUserSig.GetInstance().GenTestUserSig(DataManager.GetInstance().account);
             // 如果您有进房权限保护的需求，则参考文档{https://cloud.tencent.com/document/product/647/32240}完成该功能。
@@ -677,8 +688,8 @@ namespace TRTCCSharpDemo
             //    if (isExitRoom)
             //        this.remoteUserLabel5.Text = "";
             //}
-            if(isExitRoom) 
-                SetVisableInfoView(pos, false);
+            //if(isExitRoom) 
+                //SetVisableInfoView(pos, false);
             return pos;
         }
 
@@ -820,6 +831,8 @@ namespace TRTCCSharpDemo
             {
                 mTRTCCloud.exitRoom();
                 this.Hide();
+                //this.Close();
+                //Application.Exit();
             }
             else
             {
@@ -1949,6 +1962,33 @@ namespace TRTCCSharpDemo
             //ShowMessage("lvlinkedUser" + e.ToString());
 
             
+        }
+
+        private void btnPush_Click(object sender, EventArgs e)
+        {
+            string liveId = DataManager.GetInstance().liveId.ToString();
+            rtc_Signature(liveId);
+        }
+
+
+        private void renewPush(string liveId) {
+            PushInfo pushInfo = new PushInfo() { appId = "", vendor = "" };
+            WebClient webClient = new WebClient();
+            NameValueCollection nameValueCollection = new NameValueCollection()
+            {
+                { "liveId", liveId }
+            };
+            //{ "pushInfo", JsonConvert.SerializeObject(pushInfo) }
+            //WebHeaderCollection
+            //webClient.Headers = "";
+            string res = HttpUtil.WebPost(ApiServer.PUSH_URL, nameValueCollection);
+            ShowMessage("res:" + res);
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+            AddSourceForm addSource = new AddSourceForm();
+            addSource.Show();
         }
     }
 }

@@ -129,8 +129,9 @@
             // tbPwd
             // 
             this.tbPwd.Location = new System.Drawing.Point(99, 152);
-            this.tbPwd.MaxLength = 18;
+            this.tbPwd.MaxLength = 50;
             this.tbPwd.Name = "tbPwd";
+            this.tbPwd.PasswordChar = '*';
             this.tbPwd.Size = new System.Drawing.Size(219, 23);
             this.tbPwd.TabIndex = 8;
             this.tbPwd.Text = "901";

@@ -8,6 +8,9 @@ using TRTCCSharpDemo.Common;
 using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Net;
+using Newtonsoft.Json;
 
 /// <summary>
 /// Module： TRTCLoginForm
@@ -49,7 +52,7 @@ namespace TRTCCSharpDemo
         {
             this.tbPwd.Focus();
             this.tbAccount.Text = DataManager.GetInstance().account;
-            this.tbPwd.Text = DataManager.GetInstance().roomId.ToString();
+            this.tbPwd.Text = DataManager.GetInstance().password;
             this.tbLiveId.Text = DataManager.GetInstance().liveId.ToString();
 
             if (IsTestEnv())
@@ -127,20 +130,8 @@ namespace TRTCCSharpDemo
                 return;
             }
 
-            string url = "https://sandbox-api.wakkaa.com/1/tr/trainer/signin";
-            Dictionary<string, string> jo = new Dictionary<string, string>
-            {
-                { "username", "wumingzhou" },
-                { "password", "w123456" },
-                { "client", "" }
-            };
-            ShowMessage("jo:" + jo.ToString());
-            string respData = HttpUtil.HttpPost(url, jo.ToString());
-            ShowMessage("respData:" + respData);
-            return;
-
-            SetTestEnv();
-            SetPureAudioStyle();
+            //SetTestEnv();
+            //SetPureAudioStyle();
 
             string account = this.tbAccount.Text;
             string pwd = this.tbPwd.Text;
@@ -151,19 +142,53 @@ namespace TRTCCSharpDemo
                 return;
             }
 
-            uint password;
-            if (!uint.TryParse(pwd, out password))
+            if (!uint.TryParse(liveId, out _))
             {
                 ShowMessage(String.Format("目前支持的最大房间号为{0}", uint.MaxValue));
                 return;
             }
 
-            DataManager.GetInstance().account = account;
-            DataManager.GetInstance().roomId = password;
-
-            if (uint.TryParse(liveId, out uint mLiveId))
+            NameValueCollection nameValue = new NameValueCollection()
             {
-                DataManager.GetInstance().liveId = mLiveId;
+                { "username", account },
+                { "password", pwd }
+            };
+            string res = HttpUtil.WebPost(ApiServer.SIGNIN, nameValue);
+            JObject jo = JObject.Parse(res);
+            int errcode = int.Parse(jo["errcode"].ToString());
+            if (errcode != 0)
+            {
+                ShowMessage("登录失败，" + jo["errmsg"].ToString());
+                return;
+            }
+
+            DataManager.GetInstance().account = account;
+            DataManager.GetInstance().password = pwd;
+            DataManager.GetInstance().session = jo["result"]["accessToken"]["token"].ToString();
+
+            //Live live = new Live
+            //{
+            //    type = 6,
+            //    title = "this is live title!",
+            //    intro = "this is live intro!",
+            //    price = 1,
+            //    password = "123",
+            //    startAt = Util.GetTimeStamp().ToString(),
+            //    endAt = "",
+            //    state = 2
+            //};
+
+            //NameValueCollection nameValueCollection = new NameValueCollection() {
+            //    {"live", JsonConvert.SerializeObject(live) }
+            //};
+            //string ret = HttpUtil.WebPost(ApiServer.PUBLISH_LIVE, nameValueCollection);
+            //ShowMessage("ret:" + ret);
+
+
+
+            if (uint.TryParse(liveId, out uint LiveId))
+            {
+                DataManager.GetInstance().liveId = LiveId;
             }
 
             // 从本地计算获取 userId 对应的 userSig

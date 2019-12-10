@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -9,8 +10,8 @@ namespace TRTCCSharpDemo.Common
 {
     class HttpUtil
     {
-        private string mUserAgent = null;
-        private HttpWebRequest mRequest = null;
+        private static string mUserAgent = null;
+        private static HttpWebRequest mRequest = null;
 
         public HttpUtil(string userAgent)
         {
@@ -31,7 +32,7 @@ namespace TRTCCSharpDemo.Common
             }
         }
 
-        public string Get(string url, int timeout)
+        public static string Get(string url, int timeout)
         {
             if (string.IsNullOrEmpty(url))
             {
@@ -56,7 +57,7 @@ namespace TRTCCSharpDemo.Common
             return respData;
         }
 
-        public string Post(string url, byte[] body, int timeout)
+        public static string Post(string url, byte[] body, int timeout)
         {
             if (string.IsNullOrEmpty(url))
             {
@@ -120,9 +121,10 @@ namespace TRTCCSharpDemo.Common
 
             WebHeaderCollection headerCollection = new WebHeaderCollection
             {
-                { "x-api-version", "5.27" },
-                { "x-mdi-id", "100897" },
-                { "x-locale", "zh_CN" }
+                { "x-api-version", "2.5" },
+                //{ "x-mdi-id", "100897" },
+                { "x-locale", "zh_CN" },
+                 { "x-usr-sess", DataManager.GetInstance().session }
             };
             //headerCollection.Add("User-Agent", "android");
             //headerCollection.Add("x-tr-sess", DataManager.GetInstance().session);
@@ -151,6 +153,56 @@ namespace TRTCCSharpDemo.Common
             }
 
             return strReturn;
+        }
+
+        public static string WebPost(string url, NameValueCollection nameValueCollection)
+        {
+            if (url is null)
+            {
+                throw new ArgumentNullException(nameof(url));
+            }
+
+            WebClient webClient = new WebClient();
+            WebHeaderCollection headerCollection = new WebHeaderCollection
+            {
+                { "x-api-version", "2.5" },
+                //{ "x-mdi-id", "100897" },
+                { "x-locale", "zh_CN" },
+                 { "x-accesstoken", DataManager.GetInstance().session }
+            };
+            //x-usr-sess
+            //x-accesstoken
+            //resquest.ContentType = "application/json; charset=UTF-8",
+            //resquest.ContentType = "application/x-www-form-urlencoded"
+
+            webClient.Headers = headerCollection;
+            byte[] info = webClient.UploadValues(url, "POST", nameValueCollection);
+            return Encoding.UTF8.GetString(info);
+        }
+
+        public static void AsyncWebPost(string url, NameValueCollection nameValueCollection)
+        {
+            if (url is null)
+            {
+                throw new ArgumentNullException(nameof(url));
+            }
+
+            WebClient webClient = new WebClient();
+            WebHeaderCollection headerCollection = new WebHeaderCollection
+            {
+                { "x-api-version", "2.5" },
+                //{ "x-mdi-id", "100897" },
+                { "x-locale", "zh_CN" },
+                 { "x-accesstoken", DataManager.GetInstance().session }
+            };
+            //x-usr-sess
+            //x-accesstoken
+            //resquest.ContentType = "application/json; charset=UTF-8",
+            //resquest.ContentType = "application/x-www-form-urlencoded"
+
+            webClient.Headers = headerCollection;
+            Uri uri = new Uri(url);
+            webClient.UploadValuesAsync(uri, nameValueCollection);
         }
     }
 }

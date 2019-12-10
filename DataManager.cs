@@ -16,7 +16,7 @@ namespace TRTCCSharpDemo
 
         // 用户
         public const string INI_KEY_ACCOUNT = "INI_KEY_USER_ID";
-        public const string INI_KEY_ROOM_ID = "INI_KEY_ROOM_ID";
+        public const string INI_KEY_PASSWORD = "INI_KEY_PASSWORD";
         public const string INI_KEY_ROLE_TYPE = "INI_KEY_ROLE_TYPE";
         public const string INI_KEY_LIVE_ID = "INI_KEY_LIVE_ID";
         // 设备
@@ -102,24 +102,24 @@ namespace TRTCCSharpDemo
         {
             // 用户信息配置
             string account = storage.GetValue(INI_ROOT_KEY, INI_KEY_ACCOUNT);
-            if (string.IsNullOrEmpty(account))
-                this.account = Util.GetRandomString(8);
-            else
+            //if (string.IsNullOrEmpty(account))
+            //    this.account = Util.GetRandomString(8);
+            //else
                 this.account = account;
-            string roomId = storage.GetValue(INI_ROOT_KEY, INI_KEY_ROOM_ID);
-            if (string.IsNullOrEmpty(roomId))
-                this.roomId = uint.Parse(Util.GetRandomString(3));
-            else
-                this.roomId = uint.Parse(roomId);
+            string password = storage.GetValue(INI_ROOT_KEY, INI_KEY_PASSWORD);
+            //if (string.IsNullOrEmpty(password))
+            //    this.password = uint.Parse(Util.GetRandomString(3));
+            //else
+                this.password = password;
             string role = storage.GetValue(INI_ROOT_KEY, INI_KEY_ROLE_TYPE);
             if (string.IsNullOrEmpty(role))
                 this.roleType = TRTCRoleType.TRTCRoleAnchor;
             else
                 this.roleType = (TRTCRoleType)(int.Parse(role));
             string liveId = storage.GetValue(INI_ROOT_KEY, INI_KEY_LIVE_ID);
-            if (string.IsNullOrEmpty(liveId))
-                this.liveId = uint.Parse(Util.GetRandomString(6));
-            else
+            //if (string.IsNullOrEmpty(liveId))
+            //    this.liveId = uint.Parse(Util.GetRandomString(6));
+            //else
                 this.liveId = uint.Parse(liveId);
 
             // 视频参数配置
@@ -260,7 +260,7 @@ namespace TRTCCSharpDemo
         private void WriteConfig()
         {
             storage.SetValue(INI_ROOT_KEY, INI_KEY_ACCOUNT, account);
-            storage.SetValue(INI_ROOT_KEY, INI_KEY_ROOM_ID, roomId.ToString());
+            storage.SetValue(INI_ROOT_KEY, INI_KEY_PASSWORD, password);
             storage.SetValue(INI_ROOT_KEY, INI_KEY_ROLE_TYPE, ((int)roleType).ToString());
             storage.SetValue(INI_ROOT_KEY, INI_KEY_LIVE_ID, liveId.ToString());
 
@@ -316,7 +316,7 @@ namespace TRTCCSharpDemo
         #region 用户相关
         public string account { get; set; }
 
-        public uint roomId { get; set; }
+        public string password { get; set; }
 
         // 该字段只作用于直播模式
         public TRTCRoleType roleType { get; set; }
@@ -400,6 +400,7 @@ namespace TRTCCSharpDemo
     {
         public string account { get; set; }
 
+
         public int position { get; set; }
     }
 
@@ -469,5 +470,22 @@ namespace TRTCCSharpDemo
             GetPrivateProfileString(section, key, "", temp, 255, sPath);
             return temp.ToString();
         }
+    }
+
+    class Live {
+        public int type { get; set; }         //类型
+        public string title { get; set; }         //标题
+        public string intro { get; set; }   //简介
+        public double price { get; set; }   //价格
+        public string password { get; set; }
+        public string startAt { get; set; }
+        public string endAt { get; set; }
+        public int state { get; set; }   //上下架状态
+    }
+
+    class PushInfo {        //推流信息
+        public string appId { get; set; }
+
+        public string vendor { get; set; }      //rtc_signature
     }
 }
